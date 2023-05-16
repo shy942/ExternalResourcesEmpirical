@@ -26,16 +26,18 @@ public class StackTraceMainMasudDB {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		String corpus="ecf";
-		String bugIDpath="StackTrace//"+corpus+"//stBugIDdateBased.txt";
+		String bugIDpath="DataSets//StackTrace//"+corpus+"//stBugIDdateBased.txt";
 		File directory = new File(bugIDpath);
 		   System.out.println(directory.getAbsolutePath());
-		/*String STbugReportFolderPath=Config.baseForPrototype+"//BLIZZARD-Replication-Package-ESEC-FSE2018//BR-ST-StackTraces//"+corpus+"//";
 		
-		String goldsetFolderPath=Base.Config.baseForPrototype+"//BLIZZARD-Replication-Package-ESEC-FSE2018//Goldset//"+corpus+"//";
-		String STscroreOutputFile=Base.Config.baseForPrototype+"//"+corpus+"//StackTrace//STbasedResult.txt";
+		String STbugReportFolderPath="DataSets//BR-ST-StackTraces//"+corpus+"//";
+		
+		String goldsetFolderPath="DataSets//Goldset//"+corpus+"//";
+		
+		String STscroreOutputFile="DataSets//StackTrace//"+corpus+"//STbasedResult.txt";
 		
 		StackTraceMainMasudDB obj=new StackTraceMainMasudDB(corpus);
-		obj.Manager(bugIDpath, STbugReportFolderPath, corpus, goldsetFolderPath, STscroreOutputFile);*/
+		obj.Manager(bugIDpath, STbugReportFolderPath, corpus, goldsetFolderPath, STscroreOutputFile);
 	}
 
 	private void Manager(String bugIDpath, String sTbugReportFolderPath, String corpus2, String goldsetFolderPath, String STscroreOutputFile) {
