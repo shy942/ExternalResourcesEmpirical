@@ -10,6 +10,10 @@ import utility.ContentLoader;
 
 public class RQ1_TS_TC_BFH_ST {
 
+	public static HashMap<String, ArrayList<String>> hmResultStorageBLtop10=new HashMap<>();	
+    public static HashMap<String, ArrayList<String>> hmResultStorageB$BLtop10=new HashMap<>();
+    
+
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		String corpus="ecf";
@@ -22,36 +26,189 @@ public class RQ1_TS_TC_BFH_ST {
         //collect id-source map
       	//String idSourceMapFilePath="DataSets//Corpus//"+corpus+".ckeys";
         //HashMap<String, String> hmIDsource=getIDsouceMap(idSourceMapFilePath);
-      		
-        
         //base for optimal query
 	    String base="DataSets\\BugLocatorResults\\";
-	    String resultFileName=corpus+"_output_"+alpha+"_"+no_of_bug_report+".txt";
+	    //String resultFileName=corpus+"_output_"+alpha+"_"+no_of_bug_report+".txt";
 	    String resultFileNameB4BL=base+corpus+"_output_"+alpha+"_B4BL"+".txt";
-	    String resultFilePath=base+resultFileName;
+	    //String resultFilePath=base+resultFileName;
 	    
-	    String resultFilePathBLUiR="DataSets\\BLUiR\\"+corpus+".txt";
+	    String resultFilePathBLUiR="DataSets\\BLUiRResults\\"+corpus+".txt";
 	    //String resultFilePath=base+resultFileName;
 	    
 	    String goldsetFolderPath="DataSets//Goldset//"+corpus+"//";
-		//String resultPathST=Base.Config.baseForPrototype+"//"+corpus+"//StackTrace//STbasedResult.txt";*/
+		String resultPathST="DataSets//StackTrace//"+corpus+"//STbasedResult.txt";
 		
 	    RQ1_TS_TC_BFH_ST obj=new RQ1_TS_TC_BFH_ST();
-	    System.out.println("BugLocator Performance:  ");
-	    obj.BugLocatorPerformance(resultFilePath, no_of_bug_report);
-	  //collect id-source map
+	    
+	    System.out.println("TC performance: ");
+	    //obj.BugLocatorPerformance(resultFilePath, no_of_bug_report);
+	    //collect id-source map
       	String idSourceMapFilePath="DataSets//Corpus//"+corpus+".ckeys";
         HashMap<String, String> hmIDsource=obj.getIDsouceMap(idSourceMapFilePath);
-      	
-	    obj.BugLocatorPerformanceB4BL(resultFileNameB4BL, goldsetFolderPath, no_of_bug_report, corpus, hmIDsource);
+      	//Performance for TC
+        obj.BugLocatorPerformanceB4BL(resultFileNameB4BL, goldsetFolderPath, no_of_bug_report, corpus, hmIDsource);
 	   
-	    obj.compareBLresuts(resultFilePath, resultFileNameB4BL, hmIDsource);
-	    /* System.out.println("BLUiR Performance:  ");
+        System.out.println("BFH performance: ");
+        alpha="1.0";
+        resultFileNameB4BL=base+corpus+"_output_"+alpha+"_B4BL"+".txt";
+        obj.BugLocatorPerformanceB4BL(resultFileNameB4BL, goldsetFolderPath, no_of_bug_report, corpus, hmIDsource);
+ 	   
+	    //start - Testing code 
+	    //RQ1_TS_TC_BFH_ST.hmResultStorageBLtop10=getTop10resultsForBL(resultFilePath);
+	    //RQ1_TS_TC_BFH_ST.hmResultStorageB$BLtop10=getTop10resultsForB4BL(resultFileNameB4BL, hmIDsource,goldsetFolderPath, corpus);
+	    //obj.compareBLresuts(RQ1_TS_TC_BFH_ST.hmResultStorageBLtop10, RQ1_TS_TC_BFH_ST.hmResultStorageB$BLtop10);
+	    //end - Testing code
+	    
+	    System.out.println("TS performance:  ");
 	    obj.BLUIRperformance(resultFilePathBLUiR,  goldsetFolderPath, no_of_bug_report, corpus);
-	    System.out.println("Stack Trace Performance: ");
-	    obj.StackTraceperformance(resultPathST, goldsetFolderPath, no_of_bug_report_ST, corpus, no_of_bug_report);*/
+	    
+	    System.out.println("ST performance: ");
+	    obj.StackTraceperformance(resultPathST, goldsetFolderPath, no_of_bug_report_ST, corpus, no_of_bug_report);
 	}
 	
+	private void compareBLresuts(HashMap<String, ArrayList<String>> hmResultStorageBLtop102,
+			HashMap<String, ArrayList<String>> hmResultStorageB$BLtop102) {
+		// TODO Auto-generated method stub
+		int count=0;
+		int i=0;
+		for(String bugID:hmResultStorageB$BLtop102.keySet())
+		{
+			if(hmResultStorageBLtop102.containsKey(bugID))count++;
+			else System.out.println(++i +" "+bugID);
+			//ArrayList<String> rankList=hmResultStorage.get(bugID);
+		}
+	}
+
+	private static HashMap<String, ArrayList<String>> getTop10resultsForB4BL(String resultFilePathBL_B4BL, HashMap<String,String> hmIDsource, String goldsetFolderPath, String corpus) {
+		// TODO Auto-generated method stub
+		HashMap<String, ArrayList<String>> hmResultStorage=new HashMap<>();
+		ArrayList<String> list=ContentLoader.getAllLinesList(resultFilePathBL_B4BL);
+		//System.out.println(list);
+		for(String line:list)
+		{
+			String[] spilter=line.split("\\t");
+			//System.out.println(spilter[2]);
+			String bugID=spilter[0];
+			
+			/*String rank=spilter[3];
+			ArrayList<String> rankList=new ArrayList<>();
+			if(hmResultStorage.containsKey(bugID))
+			{
+				rankList=hmResultStorage.get(bugID);
+			}
+			rankList.add(rank);
+			hmResultStorage.put(bugID, rankList);*/
+			
+			String file=spilter[3];
+			ArrayList<String> rankList=new ArrayList<>();
+			String [] filespilter=file.split("\\.");
+			String fileID=filespilter[filespilter.length-2];
+			String fileName=hmIDsource.get(fileID);
+			String file2save="";
+			for(int i=0;i<filespilter.length-2;i++)
+			{
+				file2save=file2save+filespilter[i]+".";
+			}
+			file2save=file2save+fileName+".java";
+			if(hmResultStorage.containsKey(bugID))
+			{
+				rankList=hmResultStorage.get(bugID);
+			}
+			rankList.add(file2save);
+			hmResultStorage.put(bugID, rankList);
+			
+			//String scoreStr=spilter[2];
+			//HashMap<String, String> hmFileInfo=new HashMap<>();
+			//if(hmResultStorage.containsKey(bugID))
+			//{
+				//hmFileInfo=hmResultStorage.get(bugID);
+			//}
+			//hmFileInfo.put(file2save, scoreStr);
+			//hmResultStorage.put(bugID, hmFileInfo);
+
+		}
+		HashMap<String, ArrayList<String>> hmResultBL_B4BLtop10=new HashMap<>();
+		HashMap<String, ArrayList<String>> hmGoldset=getTruthSet(goldsetFolderPath, hmResultStorage, corpus);
+		
+        for(String bugID:hmResultStorage.keySet())
+		{
+        	//if(bugID.equalsIgnoreCase("259389"))
+			ArrayList<String> fileList=hmResultStorage.get(bugID);
+			ArrayList<String> goldList=new ArrayList<>();
+			if(hmGoldset.containsKey(bugID))goldList=hmGoldset.get(bugID);
+			
+			int count=0;
+			for(String file:fileList)
+			{
+				
+				if(count>=10) break;
+				if(goldList.contains(file))
+				{
+					ArrayList<String> rankList=new ArrayList<>();
+					if(hmResultBL_B4BLtop10.containsKey(bugID))rankList=hmResultBL_B4BLtop10.get(bugID);
+					rankList.add(String.valueOf(count));
+					hmResultBL_B4BLtop10.put(bugID, rankList);
+					//break;
+				}
+				count++;
+			}
+			
+		}
+        System.out.println(hmResultBL_B4BLtop10);
+		return hmResultBL_B4BLtop10;
+		
+
+	}
+	
+	private static HashMap<String, ArrayList<String>> getTop10resultsForBL(String resultFilePath) {
+		// TODO Auto-generated method stub
+		HashMap<String, ArrayList<String>> hmResultStorage=new HashMap<>();
+		ArrayList<String> list=ContentLoader.getAllLinesList(resultFilePath);
+		//System.out.println(list);
+		for(String line:list)
+		{
+			String[] spilter=line.split(",");
+			//System.out.println(spilter[3]);
+			String bugID=spilter[0];
+			String rank=spilter[2];
+			ArrayList<String> rankList=new ArrayList<>();
+			if(hmResultStorage.containsKey(bugID))
+			{
+				rankList=hmResultStorage.get(bugID);
+			}
+			rankList.add(rank);
+			hmResultStorage.put(bugID, rankList);
+		}
+	
+		HashMap<String, ArrayList<String>> hmResultBugLocatortop10=new HashMap<>();
+        for(String bugID:hmResultStorage.keySet())
+		{
+			ArrayList<String> rankList=hmResultStorage.get(bugID);
+			ArrayList<String> goldList=new ArrayList<>();
+			
+			int count=0;
+			for(String rank:rankList)
+			{
+				
+				//if(count>10) break;
+				
+				int rankInt=Integer.valueOf(rank);
+				if(rankInt<10)
+				{
+					ArrayList<String> rankListTop10=new ArrayList<>();
+					if(hmResultBugLocatortop10.containsKey(bugID))rankListTop10=hmResultBugLocatortop10.get(bugID);
+					rankListTop10.add(String.valueOf(rankInt));
+					hmResultBugLocatortop10.put(bugID, rankListTop10);
+					//break;
+				}
+				count++;
+			}
+			
+		}
+        System.out.println(hmResultBugLocatortop10);
+        return hmResultBugLocatortop10;
+	}
+
 	public void compareBLresuts(String resultFilePath, String resultFileNameB4BL, HashMap<String, String> hmIDsource)
 	{
 		HashMap<String, ArrayList<String>> hmResultStorage=getResultStorageBugLocator(resultFilePath);
@@ -151,11 +308,14 @@ public class RQ1_TS_TC_BFH_ST {
         HashMap<String, ArrayList<String>> hmResultBL_B4BLtop10=new HashMap<>();
         for(String bugID:hmResultStorage.keySet())
 		{
-        	//if(bugID.equalsIgnoreCase("259389"))
+        	//if(bugID.equalsIgnoreCase("303030"))
+        	{
 			ArrayList<String> fileList=hmResultStorage.get(bugID);
 			ArrayList<String> goldList=new ArrayList<>();
 			if(hmGoldset.containsKey(bugID))goldList=hmGoldset.get(bugID);
-			
+			//System.out.println("Testing for 206528");
+			//System.out.println(fileList);
+		//	System.out.println(hmGoldset.get(bugID));
 			int count=0;
 			for(String file:fileList)
 			{
@@ -172,7 +332,7 @@ public class RQ1_TS_TC_BFH_ST {
 				count++;
 			}
 			
-		}
+		}}
         System.out.println(hmResultBL_B4BLtop10);
 		System.out.println(no_of_bug_report+" "+hmResultBL_B4BLtop10.size());
 		//Top-1
@@ -180,9 +340,9 @@ public class RQ1_TS_TC_BFH_ST {
 		//Top-2
         ComputeTopkBugLocator(2, hmResultBL_B4BLtop10, no_of_bug_report);
 		//Top-3
-		ComputeTopkBLUiR(3, hmResultStorage,hmGoldset, no_of_bug_report);
+        ComputeTopkBugLocator(3, hmResultBL_B4BLtop10, no_of_bug_report);
 		//Top-4
-		ComputeTopkBLUiR(4, hmResultStorage,hmGoldset, no_of_bug_report);
+        ComputeTopkBugLocator(4, hmResultBL_B4BLtop10, no_of_bug_report);
 		//Top-5
 		ComputeTopkBLUiR(5, hmResultStorage,hmGoldset,no_of_bug_report);
 		//Top-6
@@ -386,7 +546,7 @@ public class RQ1_TS_TC_BFH_ST {
 		return hmResultStorage;
 	}
 	
-	public HashMap<String, ArrayList<String>> getTruthSet(String goldsetPath, 	HashMap<String, ArrayList<String>> hmResultStorage, String corpus)
+	public static HashMap<String, ArrayList<String>> getTruthSet(String goldsetPath, 	HashMap<String, ArrayList<String>> hmResultStorage, String corpus)
 	{
 		HashMap<String, ArrayList<String>> hmGoldset=new HashMap<>();
 		for(String bugID:hmResultStorage.keySet())
@@ -402,7 +562,9 @@ public class RQ1_TS_TC_BFH_ST {
 				String afterDiscard="";
 				if(corpus=="ecf")
 				{
-					if(line.contains("ch"))for(int i=6;i<slash_spilter.length-1;i++)afterDiscard=afterDiscard+slash_spilter[i]+"/";
+					if(slash_spilter.length>6&&slash_spilter[6].equalsIgnoreCase("ch"))for(int i=6;i<slash_spilter.length-1;i++)afterDiscard=afterDiscard+slash_spilter[i]+"/";
+					else if(slash_spilter[0].equalsIgnoreCase("applications"))for(int i=5;i<slash_spilter.length-1;i++)afterDiscard=afterDiscard+slash_spilter[i]+"/";
+					else if(slash_spilter[0].equalsIgnoreCase("server-side")&&slash_spilter[1].equalsIgnoreCase("examples"))for(int i=5;i<slash_spilter.length-1;i++)afterDiscard=afterDiscard+slash_spilter[i]+"/";
 					else for(int i=4;i<slash_spilter.length-1;i++)afterDiscard=afterDiscard+slash_spilter[i]+"/";
 				}
 				else if(corpus=="eclipse.jdt.ui"|| corpus=="eclipse.jdt.debug" || corpus=="eclipse.jdt.core")
@@ -651,9 +813,9 @@ public class RQ1_TS_TC_BFH_ST {
 			}
 			
 		}
-		System.out.println("% 		of ST: "+Double.valueOf(no_of_bug_ST)/Double.valueOf(no_of_bug_report)*100);
+		//System.out.println("% 		of ST: "+Double.valueOf(no_of_bug_ST)/Double.valueOf(no_of_bug_report)*100);
 		System.out.println("% of Top-"+(topK+1)+" : "+Double.valueOf(no_of_topK)/Double.valueOf(no_of_bug_report)*100+"%");
-		System.out.println("% 		of Top-"+(topK+1)+" in ST: "+Double.valueOf(no_of_topK)/Double.valueOf(no_of_bug_ST)*100+"%");
+		//System.out.println("% 		of Top-"+(topK+1)+" in ST: "+Double.valueOf(no_of_topK)/Double.valueOf(no_of_bug_ST)*100+"%");
 
 	}
 
