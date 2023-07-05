@@ -27,6 +27,7 @@ public class VersionHistoryScoreProvider {
 		this.fileKeyMap = FileMapLoader.loadKeyMap(repoName);
 		//this.goldmap=new HashMap<>();
 		this.goldmap=GoldsetLoader.getGoldsetWithFileIDs(repoName);
+		System.out.println(this.goldmap);
 //		this.goldmap=GoldsetLoader.goldsetLoader(repoName, bugID);
 	}
 
@@ -126,7 +127,7 @@ public class VersionHistoryScoreProvider {
 
 	public static void main(String[] args) {
 		String repoName = "ecf";
-		int bugID = 211585;
+		int bugID = 259480;
 		System.out.println(new VersionHistoryScoreProvider(bugID, repoName)
 				.getSuspicionScores());
 	 }

@@ -38,12 +38,14 @@ public class Main_VHSprovider {
 		for(String bugIDstr:bugIDlist)
 		{
 			int bugID=Integer.valueOf(bugIDstr);
+			//String bugIDstr=String.valueOf(bugID);
 			System.out.println(bugIDstr);
 			
 			VersionHistoryScoreProvider objVHSP=new VersionHistoryScoreProvider(bugID, corpus);
 			HashMap<Integer, Double> scoreMap=objVHSP.getSuspicionScores();
 			HashMap<String, Double> score2Store=new HashMap<>();
-			System.out.println(scoreMap);
+			//System.out.println("from master");
+			//System.out.println(scoreMap);
 			for(int fileInt:scoreMap.keySet())
 			{
 				//System.out.println(hmKeys.get(fileInt)+" : "+scoreMap.get(fileInt));
@@ -85,7 +87,7 @@ public class Main_VHSprovider {
 				sortedHmSTresult.put(bugID, sortedContentHM);
 			}}
 		}
-		System.out.println(total_bug_report+" "+VHS_bug_report);
+		//System.out.println(total_bug_report+" "+VHS_bug_report);
 		//this.total_Bug_Report=this.total_Bug_Report+total_bug_report;
 		//this.toal_Bug_Report_StackTrace=this.toal_Bug_Report_StackTrace+ST_bug_report;
 		return sortedHmSTresult;

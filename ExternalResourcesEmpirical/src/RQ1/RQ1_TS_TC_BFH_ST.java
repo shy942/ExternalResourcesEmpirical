@@ -613,7 +613,7 @@ public class RQ1_TS_TC_BFH_ST {
 		
 		HashMap<String, ArrayList<String>> hmGoldset=getTruthSet(goldsetFolderPath, hmResultStorage, corpus);
 		
-		//System.out.println(hmResultStorage);
+		System.out.println(hmResultStorage.size()+" "+hmGoldset.size());
         double averageRecall=0.0;
         HashMap<String, ArrayList<String>> hmResultBLUiRtop10=new HashMap<>();
         for(String bugID:hmResultStorage.keySet())

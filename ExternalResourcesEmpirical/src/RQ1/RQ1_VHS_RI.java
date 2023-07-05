@@ -15,7 +15,7 @@ public class RQ1_VHS_RI {
 		// TODO Auto-generated method stub
 		// TODO Auto-generated method stub
 				String corpus="ecf";
-			    String alpha="0.0";
+			   // String alpha="0.0";
 			    // for ecf=553, eclipse.jdt.core=989, eclipse.jdt.debug=557, eclipse.jdt.ui=1115,  eclipse.pde.ui=872, tomcat70=1053
 		        int no_of_bug_report=553;
 		        //for ecf=71, eclipse.jdt.core=159, eclipse.jdt.debug=126, eclipse.jdt.ui=130, eclipse.pde.ui=123, tomcat70=217
@@ -28,10 +28,16 @@ public class RQ1_VHS_RI {
 			    RQ1_VHS_RI obj=new RQ1_VHS_RI();
 			    
 			    System.out.println("VHS performance: ");
-			    obj.VersioHistoryPerformance(resultPathVH,goldsetFolderPath, corpus, no_of_bug_report);			   
+			    obj.VersioHistoryPerformance(resultPathVH,goldsetFolderPath, corpus, no_of_bug_report);	
+			    
+			    String resultPathAH="DataSets//AuthorHistory//"+corpus+"//RIbasedResult.txt";
+			    System.out.println("RI performance: ");
+			    obj.ReporterInformationPerformance(resultPathAH,goldsetFolderPath, corpus, no_of_bug_report);
+
+				
 	}
 	
-	public HashMap<String, ArrayList<String>> getTruthSet(String goldsetPath, 	HashMap<String, ArrayList<String>> hmResultStorage, String corpus)
+	public HashMap<String, ArrayList<String>> getTruthSet(int RI, String goldsetPath, 	HashMap<String, ArrayList<String>> hmResultStorage, String corpus)
 	{
 		HashMap<String, ArrayList<String>> hmGoldset=new HashMap<>();
 		for(String bugID:hmResultStorage.keySet())
@@ -40,11 +46,20 @@ public class RQ1_VHS_RI {
 			ArrayList<String> content=ContentLoader.getAllLinesList(goldsetPath+bugID+".txt");
 			for(String line:content)
 			{
-				if(corpus=="ecf")
+				if(corpus=="ecf"&&RI==0)
 				{
 					String[] slash_spilter=line.split("/");
 					String file="";
 					for(int i=4;i<slash_spilter.length-1;i++)file=file+slash_spilter[i]+".";
+					file=file+slash_spilter[slash_spilter.length-1];
+					if(!goldList.contains(file))goldList.add(file);
+				}
+				
+				else if(corpus=="ecf"&&RI==1)
+				{
+					String[] slash_spilter=line.split("/");
+					String file="";
+					for(int i=0;i<slash_spilter.length-1;i++)file=file+slash_spilter[i]+".";
 					file=file+slash_spilter[slash_spilter.length-1];
 					if(!goldList.contains(file))goldList.add(file);
 				}
@@ -157,17 +172,79 @@ public class RQ1_VHS_RI {
 					hmGoldset.put(bugID, goldList);
 				}*/
 			}
-			hmGoldset.put(bugID, goldList);
+		hmGoldset.put(bugID, goldList);
 		}
 		return hmGoldset;
 	}
+	/*
+	public static HashMap<String, ArrayList<String>> getTruthSet(String goldsetPath, 	HashMap<String, ArrayList<String>> hmResultStorage, String corpus)
+	{
+		HashMap<String, ArrayList<String>> hmGoldset=new HashMap<>();
+		for(String bugID:hmResultStorage.keySet())
+		{
+			ArrayList<String> goldList=new ArrayList<>();
+			ArrayList<String> content=ContentLoader.getAllLinesList(goldsetPath+bugID+".txt");
+			for(String line:content)
+			{
+				int discard=0;
+				//System.out.println(line);
+				String[] slash_spilter=line.split("/");
+			
+				String afterDiscard="";
+				if(corpus=="ecf")
+				{
+					if(slash_spilter.length>6&&slash_spilter[6].equalsIgnoreCase("ch"))for(int i=6;i<slash_spilter.length-1;i++)afterDiscard=afterDiscard+slash_spilter[i]+"/";
+					else if(slash_spilter[0].equalsIgnoreCase("applications"))for(int i=5;i<slash_spilter.length-1;i++)afterDiscard=afterDiscard+slash_spilter[i]+"/";
+					else if(slash_spilter[0].equalsIgnoreCase("server-side")&&slash_spilter[1].equalsIgnoreCase("examples"))for(int i=5;i<slash_spilter.length-1;i++)afterDiscard=afterDiscard+slash_spilter[i]+"/";
+					else for(int i=4;i<slash_spilter.length-1;i++)afterDiscard=afterDiscard+slash_spilter[i]+"/";
+				}
+				else if(corpus=="eclipse.jdt.ui"|| corpus=="eclipse.jdt.debug" || corpus=="eclipse.jdt.core")
+				{
+					for(int i=2;i<slash_spilter.length-1;i++)afterDiscard=afterDiscard+slash_spilter[i]+"/";
+				}
+				else if(corpus=="eclipse.pde.ui")
+				{
+					for(int i=3;i<slash_spilter.length-1;i++)afterDiscard=afterDiscard+slash_spilter[i]+"/";
+				}
+				else if(corpus=="tomcat70")
+				{
+					if(line.contains("org"))
+					{
+						//System.out.println(line);
+						int index=line.indexOf("org");
+						afterDiscard=line.substring(index);
+					}
+					else discard=1;
+				}
+				if(corpus!="tomcat70")afterDiscard=afterDiscard+slash_spilter[slash_spilter.length-1];
+				String filePathWithDot=afterDiscard.replace("/", ".");
+				//if(hmKeys.containsKey(filePathWithDot)) System.out.println(filePathWithDot);
+				String processedFile="";
+			
+				int index=0;
+				String processedFileWithDot=filePathWithDot;
+			
+				if(discard==0)
+				{
+					if(hmGoldset.containsKey(bugID))
+					{
+						goldList=hmGoldset.get(bugID);
+					}
+					goldList.add(processedFileWithDot);
+					hmGoldset.put(bugID, goldList);
+				}
+			}
+		}
+		return hmGoldset;
+	}*/
+
 	public void VersioHistoryPerformance(String resultPathVH, String goldsetFolderPath, String corpus, int total_bug_report)
 	{
 		HashMap<String, ArrayList<String>> hmResultStorage=getResultStorageVHS(resultPathVH) ;
 		
-		HashMap<String, ArrayList<String>> hmGoldset=getTruthSet(goldsetFolderPath, hmResultStorage, corpus);
+		HashMap<String, ArrayList<String>> hmGoldset=getTruthSet(0,goldsetFolderPath, hmResultStorage, corpus);
 		
-		System.out.println(hmResultStorage);
+		System.out.println(hmResultStorage.size());
         double averageRecall=0.0;
         HashMap<String, ArrayList<String>> hmResultSTtop10=new HashMap<>();
         for(String bugID:hmResultStorage.keySet())
@@ -310,6 +387,7 @@ public class RQ1_VHS_RI {
 				if(goldList.contains(file))
 				{
 					no_of_topK++;
+					//System.out.println(no_of_topK+" "+bugID);
 					break;
 				}
 			}
@@ -350,4 +428,69 @@ public class RQ1_VHS_RI {
 		return hmResultStorage;
 	}
 
+	
+	public void ReporterInformationPerformance(String resultPathVH, String goldsetFolderPath, String corpus, int total_bug_report)
+	{
+		HashMap<String, ArrayList<String>> hmResultStorage=getResultStorageVHS(resultPathVH) ;
+		
+		HashMap<String, ArrayList<String>> hmGoldset=getTruthSet(1, goldsetFolderPath, hmResultStorage, corpus);
+		
+		System.out.println(hmResultStorage);
+		System.out.println(hmGoldset);
+        double averageRecall=0.0;
+        HashMap<String, ArrayList<String>> hmResultSTtop10=new HashMap<>();
+        for(String bugID:hmResultStorage.keySet())
+		{
+			ArrayList<String> fileList=hmResultStorage.get(bugID);
+			ArrayList<String> goldList=new ArrayList<>();
+			ArrayList<String> rawGoldList=new ArrayList<>();
+			if(hmGoldset.containsKey(bugID))
+			{
+				//rawGoldList=hmGoldset.get(bugID);
+				goldList=hmGoldset.get(bugID);
+			}
+			int count=0;
+			for(String file:fileList)
+			{
+				
+				if(count>=10) break;
+				if(goldList.contains(file))
+				{
+					ArrayList<String> rankList=new ArrayList<>();
+					if(hmResultSTtop10.containsKey(bugID))rankList=hmResultSTtop10.get(bugID);
+					rankList.add(String.valueOf(count));
+					hmResultSTtop10.put(bugID, rankList);
+					//break;
+				}
+				count++;
+			}
+			
+		}
+       // System.out.println(hmResultSTtop10);
+		
+		//Top-1
+		ComputeTopkST(1, hmResultStorage,hmGoldset, total_bug_report);
+		//Top-2
+		ComputeTopkST(2, hmResultStorage,hmGoldset, total_bug_report);
+		//Top-3
+		ComputeTopkST(3, hmResultStorage,hmGoldset, total_bug_report);
+		//Top-4
+		ComputeTopkST(4, hmResultStorage,hmGoldset, total_bug_report);
+		//Top-5
+		ComputeTopkST(5, hmResultStorage,hmGoldset,total_bug_report);
+		//Top-6
+		ComputeTopkST(6, hmResultStorage,hmGoldset, total_bug_report);
+		//Top-7
+		ComputeTopkST(7, hmResultStorage,hmGoldset, total_bug_report);
+		//Top-8
+		ComputeTopkST(8, hmResultStorage,hmGoldset, total_bug_report);
+		//Top-9
+		ComputeTopkST(9, hmResultStorage,hmGoldset, total_bug_report);
+		//Top-10
+		ComputeTopkST(10, hmResultStorage,hmGoldset,total_bug_report);
+		//MRR
+		ComputeMRR_BLUiR(hmResultSTtop10,total_bug_report);
+		//MAP
+		ComputeMAP(hmResultSTtop10, total_bug_report);
+	}
 }
