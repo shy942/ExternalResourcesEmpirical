@@ -16,3 +16,5 @@ TC -  Unzip TC-BFH.zip. The result file for a given system will be as follows: s
 BFH -  Unzip TC-BFH.zip. The result file for a given system will be as follows: system_output_1.0_no_of_bug.txt (e.g., ecf_output_1.0_553.txt)
 
 ST - Unzip ST.zip. There are six folders for all subject systems. The stack trace result file format is as follows: STbasedResult.txt
+
+VHS - Unzip VHS.zip. There are six folders for all subject systems. The version history score file format for each system is as follows: VHbasedResult.txt
