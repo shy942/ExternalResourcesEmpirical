@@ -18,3 +18,6 @@ BFH -  Unzip TC-BFH.zip. The result file for a given system will be as follows: 
 ST - Unzip ST.zip. There are six folders for all subject systems. The stack trace result file format is as follows: STbasedResult.txt
 
 VHS - Unzip VHS.zip. There are six folders for all subject systems. The version history score file format for each system is as follows: VHbasedResult.txt
+
+RI - Unzip RI.zip. There are six folders for all subject systems. The reporter information file format for each system is as follows: RIbasedResult.txt
+
