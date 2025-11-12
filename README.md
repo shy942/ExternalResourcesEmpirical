@@ -9,7 +9,9 @@ VersionHistory.zip contains version history information for all six subject syst
 
 # Results produced by six information sources
 
-TC -  Go to TS-BFH.zip. The result file for a given system will be as follows: system_output_0.0_no_of_bug.txt (e.g., ecf_output_0.0_553.txt)
+TS -  Go to TS.zip. The result file for a given system will be as follows: system.txt (e.g., ecf.txt)
 
-BFH -  Go to TS-BFH.zip. The result file for a given system will be as follows: system_output_1.0_no_of_bug.txt (e.g., ecf_output_1.0_553.txt)
+TC -  Go to TC-BFH.zip. The result file for a given system will be as follows: system_output_0.0_no_of_bug.txt (e.g., ecf_output_0.0_553.txt)
+
+BFH -  Go to TC-BFH.zip. The result file for a given system will be as follows: system_output_1.0_no_of_bug.txt (e.g., ecf_output_1.0_553.txt)
 
