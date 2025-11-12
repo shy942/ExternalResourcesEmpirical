@@ -6,3 +6,10 @@ AuthorHistory.zip contains the authors' information for all six subject systems
 StackTrace.zip contains the stack trace information for all six subject systems
 
 VersionHistory.zip contains version history information for all six subject systems
+
+# Results produced by six information sources
+
+TS -  Go to TS-BFH.zip. The result file for a given system will be as follows: system_output_0.0_no_of_bug.txt (e.g., ecf_output_0.0_553.txt)
+
+BFH -  Go to TS-BFH.zip. The result file for a given system will be as follows: system_output_1.0_no_of_bug.txt (e.g., ecf_output_1.0_553.txt)
+
