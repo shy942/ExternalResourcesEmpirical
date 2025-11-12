@@ -9,9 +9,10 @@ VersionHistory.zip contains version history information for all six subject syst
 
 # Results produced by six information sources
 
-TS -  Go to TS.zip. The result file for a given system will be as follows: system.txt (e.g., ecf.txt)
+TS -  Unzip TS.zip. The result file for a given system will be as follows: system.txt (e.g., ecf.txt)
 
-TC -  Go to TC-BFH.zip. The result file for a given system will be as follows: system_output_0.0_no_of_bug.txt (e.g., ecf_output_0.0_553.txt)
+TC -  Unzip TC-BFH.zip. The result file for a given system will be as follows: system_output_0.0_no_of_bug.txt (e.g., ecf_output_0.0_553.txt)
 
-BFH -  Go to TC-BFH.zip. The result file for a given system will be as follows: system_output_1.0_no_of_bug.txt (e.g., ecf_output_1.0_553.txt)
+BFH -  Unzip TC-BFH.zip. The result file for a given system will be as follows: system_output_1.0_no_of_bug.txt (e.g., ecf_output_1.0_553.txt)
 
+ST - Unzip ST.zip. There are six folders for all subject systems. The stack trace result file format is as follows: STbasedResult.txt
