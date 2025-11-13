@@ -9,6 +9,8 @@ VersionHistory.zip contains version history information for all six subject syst
 
 # Results produced by six information sources
 
+#RQ1
+
 TS -  Unzip TS.zip. The result file for a given system will be as follows: system.txt (e.g., ecf.txt)
 
 TC -  Unzip TC-BFH.zip. The result file for a given system will be as follows: system_output_0.0_no_of_bug.txt (e.g., ecf_output_0.0_553.txt)
@@ -21,3 +23,6 @@ VHS - Unzip VHS.zip. There are six folders for all subject systems. The version 
 
 RI - Unzip RI.zip. There are six folders for all subject systems. The reporter information file format for each system is as follows: RIbasedResult.txt
 
+RQ2
+
+Combined Results - Unzip RQ2.zip. The results for eleven combinations of information sources can be found here.
