@@ -23,6 +23,6 @@ VHS - Unzip VHS.zip. There are six folders for all subject systems. The version 
 
 RI - Unzip RI.zip. There are six folders for all subject systems. The reporter information file format for each system is as follows: RIbasedResult.txt
 
-RQ2
+#RQ2
 
 Combined Results - Unzip RQ2.zip. The results for eleven combinations of information sources can be found here.
